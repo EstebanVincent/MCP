@@ -4,10 +4,11 @@ from dataclasses import dataclass
 from typing import List
 
 import fal_client
-from mcp.server.fastmcp import FastMCP
-from mcp.server.fastmcp.utilities.types import Image
 from openai import AzureOpenAI
 from pydantic import BaseModel
+
+from mcp.server.fastmcp import FastMCP
+from mcp.server.fastmcp.utilities.types import Image
 
 # Create an MCP server
 mcp = FastMCP("Fal AI", host="0.0.0.0", port=8025)
@@ -15,6 +16,49 @@ mcp = FastMCP("Fal AI", host="0.0.0.0", port=8025)
 
 class FluxGeneration(BaseModel):
     prompt: str
+
+
+@dataclass
+class FalAILora:
+    """Configuration for Fal AI LoRA"""
+
+    path: str
+    scale: float = 1.0
+    trigger_word: str = ""
+
+    def to_dict(self):
+        return {
+            "path": self.path,
+            "scale": self.scale,
+        }
+
+
+@dataclass
+class Config:
+    """Configuration for image generation"""
+
+    prompt: str
+    loras: List[FalAILora]
+    sync_mode: bool = True
+    image_size: str = "landscape_4_3"
+    num_inference_steps: int = 28
+    guidance_scale: float = 3.5
+    num_images: int = 1
+    enable_safety_checker: bool = True
+    output_format: str = "png"
+
+    def to_dict(self):
+        return {
+            "prompt": self.prompt,
+            "loras": [lora.to_dict() for lora in self.loras],
+            "sync_mode": self.sync_mode,
+            "image_size": self.image_size,
+            "num_inference_steps": self.num_inference_steps,
+            "guidance_scale": self.guidance_scale,
+            "num_images": self.num_images,
+            "enable_safety_checker": self.enable_safety_checker,
+            "output_format": self.output_format,
+        }
 
 
 @mcp.tool()
@@ -102,49 +146,6 @@ def improve_user_query_for_flux(
 
         llm_response = llm_response.choices[0].message.parsed
     return llm_response.prompt
-
-
-@dataclass
-class FalAILora:
-    """Configuration for Fal AI LoRA"""
-
-    path: str
-    scale: float = 1.0
-    trigger_word: str = ""
-
-    def to_dict(self):
-        return {
-            "path": self.path,
-            "scale": self.scale,
-        }
-
-
-@dataclass
-class Config:
-    """Configuration for image generation"""
-
-    prompt: str
-    loras: List[FalAILora]
-    sync_mode: bool = True
-    image_size: str = "landscape_4_3"
-    num_inference_steps: int = 28
-    guidance_scale: float = 3.5
-    num_images: int = 1
-    enable_safety_checker: bool = True
-    output_format: str = "png"
-
-    def to_dict(self):
-        return {
-            "prompt": self.prompt,
-            "loras": [lora.to_dict() for lora in self.loras],
-            "sync_mode": self.sync_mode,
-            "image_size": self.image_size,
-            "num_inference_steps": self.num_inference_steps,
-            "guidance_scale": self.guidance_scale,
-            "num_images": self.num_images,
-            "enable_safety_checker": self.enable_safety_checker,
-            "output_format": self.output_format,
-        }
 
 
 @mcp.tool()
