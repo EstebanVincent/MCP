@@ -12,6 +12,25 @@
       "description": "Esteban Lora Path",
       "password": true
     },
+    {
+      "type": "promptString",
+      "id": "azure-openai-endpoint",
+      "description": "Azure OpenAI Endpoint",
+      "default": "https://cha-aisandbox-dev-aif.cognitiveservices.azure.com"
+    },
+    {
+      "type": "promptString",
+      "id": "azure-openai-key",
+      "description": "Azure OpenAI Key",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "azure-openai-api-version",
+      "description": "Azure OpenAI API Version",
+      "default": "2025-04-01-preview"
+    },
+
   ],
     "servers": {
         "fal-ai": {
@@ -30,8 +49,11 @@
                 "SHELL": "/bin/zsh",
                 "TERM": "xterm-256color",
                 "USER": "esvi",
-				"FAL_KEY": "${input:fal-key}",
-				"LORA_PATH": "${input:lora-path}",
+                "FAL_KEY": "${input:fal-key}",
+                "LORA_PATH": "${input:lora-path}",
+                "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
+                "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
+                "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}"
             }
         }
     },
