@@ -1,10 +1,3 @@
-"""
-FastMCP quickstart example.
-
-cd to the `examples/snippets/clients` directory and run:
-    uv run server fastmcp_quickstart stdio
-"""
-
 import base64 as b64
 import os
 from dataclasses import dataclass
@@ -15,7 +8,7 @@ from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.utilities.types import Image
 
 # Create an MCP server
-mcp = FastMCP("Demo")
+mcp = FastMCP("Fal AI")
 
 
 # Add an addition tool
@@ -126,7 +119,3 @@ def generate_image_with_lora(
 
     except Exception as e:
         return f"Error generating image: {str(e)}"
-
-
-if __name__ == "__main__":
-    mcp.run()
