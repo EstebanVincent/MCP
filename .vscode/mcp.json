@@ -33,29 +33,29 @@
 
   ],
     "servers": {
-        "fal-ai": {
+        "docker-fal-ai": {
             "type": "stdio",
-            "command": "uv",
+            "command": "docker",
             "args": [
-                "run",
-                "mcp",
-                "run",
-                "main.py:mcp"
+              "run",
+              "--rm", "-i",
+              "--name", "mcp-fal-ai-server",
+              "-p", "8025:8025",
+              "-e", "FAL_KEY",
+              "-e", "LORA_PATH",
+              "-e", "AZURE_OPENAI_ENDPOINT",
+              "-e", "AZURE_OPENAI_KEY",
+              "-e", "AZURE_OPENAI_API_VERSION",
+              "mcp-fal-ai"
             ],
             "env": {
-                "HOME": "/Users/esvi",
-                "LOGNAME": "esvi",
-                "PATH": "/Users/esvi/.npm/_npx/5a9d879542beca3a/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/LabCh/Sandbox/mcp-af/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/LabCh/Sandbox/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/LabCh/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/node_modules/.bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/node_modules/.bin:/Users/esvi/Library/CloudStorage/node_modules/.bin:/Users/esvi/Library/node_modules/.bin:/Users/esvi/node_modules/.bin:/Users/node_modules/.bin:/node_modules/.bin:/opt/homebrew/lib/node_modules/npm/node_modules/@npmcli/run-script/lib/node-gyp-bin:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/LabCh/Sandbox/mcp-af/.venv/bin:/Users/esvi/.vscode/extensions/ms-python.python-2025.10.0-darwin-arm64/python_files/deactivate/zsh:/Users/esvi/Library/CloudStorage/OneDrive-Professional/Chanel/DevOps/LabCh/Sandbox/mcp-af/.venv/bin:/Users/esvi/.local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin",
-                "SHELL": "/bin/zsh",
-                "TERM": "xterm-256color",
-                "USER": "esvi",
                 "FAL_KEY": "${input:fal-key}",
                 "LORA_PATH": "${input:lora-path}",
                 "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
                 "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
                 "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}"
             }
-        }
+        },
     },
     
 }
