@@ -189,4 +189,6 @@ def generate_image_with_lora(
 
 
 if __name__ == "__main__":
+    # streamable-http not yet supported by vscode, change in url /sse to /mcp
+    # mcp.run(transport="streamable-http")
     mcp.run(transport="sse")
