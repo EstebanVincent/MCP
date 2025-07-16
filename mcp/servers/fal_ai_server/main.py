@@ -186,3 +186,7 @@ def generate_image_with_lora(
 
     except Exception as e:
         return f"Error generating image: {str(e)}"
+
+
+if __name__ == "__main__":
+    mcp.run(transport="sse")

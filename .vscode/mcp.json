@@ -33,7 +33,7 @@
 
   ],
     "servers": {
-        "docker-fal-ai": {
+        "local-fal-ai": {
             "type": "stdio",
             "command": "docker",
             "args": [
@@ -55,6 +55,10 @@
                 "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
                 "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}"
             }
+        },
+        "azure-fal-ai": {
+          "url": "https://mcp-fal-ai.calmsky-eb88238d.westeurope.azurecontainerapps.io/sse",
+          "type": "http"
         },
     },
     

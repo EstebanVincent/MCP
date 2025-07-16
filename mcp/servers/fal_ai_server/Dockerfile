@@ -16,4 +16,4 @@ ENV PYTHONUNBUFFERED=1
 ENV PYTHONDONTWRITEBYTECODE=1
 
 # Run the MCP server
-CMD ["uv", "run", "mcp", "run", "main.py:mcp"]
+CMD ["uv", "run", "python", "main.py"]
