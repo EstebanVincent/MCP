@@ -8,3 +8,6 @@ docker tag mcp-fal-ai esvimcpacr.azurecr.io/mcp-fal-ai:latest
 az acr login --name esvimcpacr
 docker push esvimcpacr.azurecr.io/mcp-fal-ai:${TIMESTAMP}
 docker push esvimcpacr.azurecr.io/mcp-fal-ai:latest
+
+# local docker build -t mcp-fal-ai-local .
+# local docker build -t mcp-chanel-knowledge-local .

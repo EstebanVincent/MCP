@@ -46,7 +46,7 @@ def search_documents(
     vector_query_obj = VectorizedQuery(
         vector=vector_query,
         k_nearest_neighbors=k,
-        fields="embedding",
+        fields="content_embedding",
         weight=0.7,
     )
     with SearchClient(
@@ -58,18 +58,16 @@ def search_documents(
             search_text=query,
             vector_queries=[vector_query_obj],
             query_type=QueryType.SEMANTIC,
-            semantic_configuration_name="my-semantic-config",
+            semantic_configuration_name=f"{search_index}-semantic-configuration",
             top=k,
         )
-
-    results = list(search_results)
+        results = list(search_results)
     clean_results = []
     for r in results:
         clean_r = {
-            "filename": r["filename"],
-            "content": r["content"],
+            "document_title": r["document_title"],
+            "content_text": r["content_text"],
             "score": r["@search.reranker_score"],
-            "caption": None,
         }
         clean_results.append(clean_r)
     return clean_results

@@ -36,41 +36,84 @@
       "description": "MCP Server Authentication Key",
       "password": true
     },
+    {
+      "type": "promptString",
+      "id": "azure-search-endpoint",
+      "description": "Azure Search Service Endpoint",
+      "default": "https://cha-aisandbox-dev-aisrch.search.windows.net"
+    },
+    {
+      "type": "promptString",
+      "id": "azure-search-admin-key",
+      "description": "Azure Search Admin Key",
+      "password": true
+    },
+    {
+      "type": "promptString",
+      "id": "linkup-api-key",
+      "description": "Linkup API Key",
+      "password": true
+    }
 
   ],
     "servers": {
-        // "local-fal-ai": {
-        //     "type": "stdio",
-        //     "command": "docker",
-        //     "args": [
-        //       "run",
-        //       "--rm", "-i",
-        //       "--name", "mcp-fal-ai-server",
-        //       "-p", "8025:8025",
-        //       "-e", "FAL_KEY",
-        //       "-e", "LORA_PATH",
-        //       "-e", "AZURE_OPENAI_ENDPOINT",
-        //       "-e", "AZURE_OPENAI_KEY",
-        //       "-e", "AZURE_OPENAI_API_VERSION",
-        //       "-e", "MCP_KEY",
-        //       "mcp-fal-ai"
-        //     ],
-        //     "env": {
-        //         "FAL_KEY": "${input:fal-key}",
-        //         "LORA_PATH": "${input:lora-path}",
-        //         "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
-        //         "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
-        //         "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}",
-        //         "MCP_KEY": "${input:mcp-key}"
-        //     }
-        // },
-        "azure-fal-ai": {
-          "url": "https://mcp-fal-ai.calmsky-eb88238d.westeurope.azurecontainerapps.io/sse",
-          "type": "http",
-          "headers": {
-            "Authorization": "Bearer ${input:mcp-key}"
-          }
+        "local-fal-ai": {
+            "type": "stdio",
+            "command": "docker",
+            "args": [
+              "run",
+              "--rm", "-i",
+              "--name", "mcp-fal-ai-local-server",
+              "-p", "8025:8025",
+              "-e", "FAL_KEY",
+              "-e", "LORA_PATH",
+              "-e", "AZURE_OPENAI_ENDPOINT",
+              "-e", "AZURE_OPENAI_KEY",
+              "-e", "AZURE_OPENAI_API_VERSION",
+              //"-e", "MCP_KEY",
+              "mcp-fal-ai-local"
+            ],
+            "env": {
+                "FAL_KEY": "${input:fal-key}",
+                "LORA_PATH": "${input:lora-path}",
+                "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
+                "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
+                "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}",
+                //"MCP_KEY": "${input:mcp-key}"
+            }
         },
+        "local-chanel-knowledge": {
+            "type": "stdio",
+            "command": "docker",
+            "args": [
+              "run",
+              "--rm", "-i",
+              "--name", "mcp-chanel-knowledge-server",
+              "-p", "8005:8005",
+              "-e", "AZURE_OPENAI_ENDPOINT",
+              "-e", "AZURE_OPENAI_KEY",
+              "-e", "AZURE_OPENAI_API_VERSION",
+              "-e", "AZURE_SEARCH_SERVICE_ENDPOINT",
+              "-e", "AZURE_SEARCH_ADMIN_KEY",
+              "-e", "LINKUP_API_KEY",
+              "mcp-chanel-knowledge-local"
+            ],
+            "env": {
+                "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
+                "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
+                "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}",
+                "AZURE_SEARCH_SERVICE_ENDPOINT": "${input:azure-search-endpoint}",
+                "AZURE_SEARCH_ADMIN_KEY": "${input:azure-search-admin-key}",
+                "LINKUP_API_KEY": "${input:linkup-api-key}"
+            }
+        },
+        // "azure-fal-ai": {
+        //   "url": "https://mcp-fal-ai.calmsky-eb88238d.westeurope.azurecontainerapps.io/sse",
+        //   "type": "http",
+        //   "headers": {
+        //     "Authorization": "Bearer ${input:mcp-key}"
+        //   }
+        // },
     },
     
 }
