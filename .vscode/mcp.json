@@ -30,35 +30,46 @@
       "description": "Azure OpenAI API Version",
       "default": "2025-04-01-preview"
     },
+    {
+      "type": "promptString",
+      "id": "mcp-key",
+      "description": "MCP Server Authentication Key",
+      "password": true
+    },
 
   ],
     "servers": {
-        "local-fal-ai": {
-            "type": "stdio",
-            "command": "docker",
-            "args": [
-              "run",
-              "--rm", "-i",
-              "--name", "mcp-fal-ai-server",
-              "-p", "8025:8025",
-              "-e", "FAL_KEY",
-              "-e", "LORA_PATH",
-              "-e", "AZURE_OPENAI_ENDPOINT",
-              "-e", "AZURE_OPENAI_KEY",
-              "-e", "AZURE_OPENAI_API_VERSION",
-              "mcp-fal-ai"
-            ],
-            "env": {
-                "FAL_KEY": "${input:fal-key}",
-                "LORA_PATH": "${input:lora-path}",
-                "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
-                "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
-                "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}"
-            }
-        },
+        // "local-fal-ai": {
+        //     "type": "stdio",
+        //     "command": "docker",
+        //     "args": [
+        //       "run",
+        //       "--rm", "-i",
+        //       "--name", "mcp-fal-ai-server",
+        //       "-p", "8025:8025",
+        //       "-e", "FAL_KEY",
+        //       "-e", "LORA_PATH",
+        //       "-e", "AZURE_OPENAI_ENDPOINT",
+        //       "-e", "AZURE_OPENAI_KEY",
+        //       "-e", "AZURE_OPENAI_API_VERSION",
+        //       "-e", "MCP_KEY",
+        //       "mcp-fal-ai"
+        //     ],
+        //     "env": {
+        //         "FAL_KEY": "${input:fal-key}",
+        //         "LORA_PATH": "${input:lora-path}",
+        //         "AZURE_OPENAI_ENDPOINT": "${input:azure-openai-endpoint}",
+        //         "AZURE_OPENAI_KEY": "${input:azure-openai-key}",
+        //         "AZURE_OPENAI_API_VERSION": "${input:azure-openai-api-version}",
+        //         "MCP_KEY": "${input:mcp-key}"
+        //     }
+        // },
         "azure-fal-ai": {
           "url": "https://mcp-fal-ai.calmsky-eb88238d.westeurope.azurecontainerapps.io/sse",
-          "type": "http"
+          "type": "http",
+          "headers": {
+            "Authorization": "Bearer ${input:mcp-key}"
+          }
         },
     },
     

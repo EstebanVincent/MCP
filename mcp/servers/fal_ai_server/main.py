@@ -7,11 +7,41 @@ import fal_client
 from openai import AzureOpenAI
 from pydantic import BaseModel
 
+from mcp.server.auth.provider import AccessToken, TokenVerifier
+from mcp.server.auth.settings import AuthSettings
 from mcp.server.fastmcp import FastMCP
 from mcp.server.fastmcp.utilities.types import Image
 
-# Create an MCP server
-mcp = FastMCP("Fal AI", host="0.0.0.0", port=8025)
+
+class MCPKeyVerifier(TokenVerifier):
+    """Simple token verifier that checks for a valid MCP-Key"""
+
+    def __init__(self, valid_key: str):
+        self.valid_key = valid_key
+
+    async def verify_token(self, token: str) -> AccessToken | None:
+        """Verify the provided token against the expected MCP key"""
+        if token == self.valid_key:
+            return AccessToken(
+                token=token,
+                client_id="mcp-client",
+                scopes=["read", "write"],
+                resource="fal-ai-server",
+            )
+        return None
+
+
+# Create an MCP server with authentication
+mcp = FastMCP(
+    "Fal AI",
+    host="0.0.0.0",
+    port=8025,
+    token_verifier=MCPKeyVerifier(os.getenv("MCP_KEY")),
+    auth=AuthSettings(
+        issuer_url="http://localhost:8025",
+        resource_server_url="http://localhost:8025",
+    ),
+)
 
 
 class FluxGeneration(BaseModel):
