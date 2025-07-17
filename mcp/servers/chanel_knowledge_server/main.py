@@ -7,6 +7,7 @@ from azure.search.documents.models import (
     QueryType,
     VectorizedQuery,
 )
+from linkup import LinkupClient
 from openai import AzureOpenAI
 
 from mcp.server.fastmcp import FastMCP
@@ -32,7 +33,7 @@ def embed_query(query):
 
 
 @mcp.tool()
-def search_official_documents(
+def search_documents(
     search_index: Literal["esvi-mcp-official", "esvi-mcp-deepresearch"],
     query: str,
     k: int = 5,
@@ -72,6 +73,21 @@ def search_official_documents(
         }
         clean_results.append(clean_r)
     return clean_results
+
+
+@mcp.tool()
+def search_web(
+    query: str,
+) -> dict:
+    """
+    Search the web using LinkupClient for real-time information
+    To be used only if search_documents did not provide sufficient results
+    """
+    client = LinkupClient(api_key=os.getenv("LINKUP_API_KEY"))
+
+    response = client.search(query=query, depth="standard", output_type="searchResults")
+
+    return response
 
 
 if __name__ == "__main__":
